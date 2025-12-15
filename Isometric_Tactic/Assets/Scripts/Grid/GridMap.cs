@@ -61,4 +61,12 @@ public class GridMap : MonoBehaviour
     /// Tile present at the provided grid coordinates.
     /// </returns>
     public Tile GetTile(int gridX, int gridZ) => _grid.GetTile(gridX, gridZ);
+
+    public List<Tile> GetEmptyTiles() => _grid.GetEmptyTiles();
+
+    public void SetOccupiedAt(bool isOccupied, Vector3 position)
+    {
+        _grid.GetGridCoord(position, out int gridX, out int gridZ);
+        _grid.GetTile(gridX, gridZ).IsOccupied = isOccupied;
+    }
 }

@@ -27,10 +27,17 @@ public class PlayerMovement : UnitMovement
         // Check if target tile's position and player's position is same.
         if (Mathf.Abs(Vector3.Distance(start, endPoint)) < DISTANCE_THROSHOLD) return;
 
-        RaiseMoveStarted();
-
         List<Vector3> path = _gridService.GetPathPoints(start, endPoint);
-        if (path == null) return;
+
+        if (path == null)
+        {
+#if UNITY_EDIOR
+            Debug.Log("The path is blocked or unreachable");
+#endif
+            return;
+        }
+
+        RaiseMoveStarted();
 
         monoBehaviour.StartCoroutine(Move(path));
     }
@@ -59,6 +66,6 @@ public class PlayerMovement : UnitMovement
         RaiseMoveEnd();
     }
 
-    protected override void RaiseMoveStarted() => GameEvents.RaiseOnPlayerMoveStarted();
+    protected override void RaiseMoveStarted() => GameEvents.RaiseOnPlayerMoveStarted(_transform.position);
     protected override void RaiseMoveEnd() => GameEvents.RaiseOnPlayerMoveEnd(_transform.position);
 }

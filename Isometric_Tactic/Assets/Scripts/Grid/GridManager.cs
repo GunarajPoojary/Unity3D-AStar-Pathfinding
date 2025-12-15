@@ -15,6 +15,22 @@ public class GridManager : MonoBehaviour, IGridService
 
         _gridMap.Init();
     }
+
+    private void OnEnable()
+    {
+        GameEvents.OnPlayerMoveStarted += OnMoveStarted;
+        GameEvents.OnPlayerMoveEnd += OnMoveEnd;
+        GameEvents.OnEnemyMoveEnd += OnMoveEnd;
+        GameEvents.OnEnemyMoveStarted += OnMoveStarted;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnPlayerMoveStarted -= OnMoveStarted;
+        GameEvents.OnPlayerMoveEnd -= OnMoveEnd;
+        GameEvents.OnEnemyMoveEnd -= OnMoveEnd;
+        GameEvents.OnEnemyMoveStarted -= OnMoveStarted;
+    }
     #endregion
 
     /// <summary>
@@ -24,4 +40,11 @@ public class GridManager : MonoBehaviour, IGridService
     /// <param name="endPoint">Desired position in the world space.</param>
     /// <returns></returns>
     public List<Vector3> GetPathPoints(Vector3 startPoint, Vector3 endPoint) => _gridMap.GetPathPoints(startPoint, endPoint);
+
+    public void SetOccupiedAt(bool isOccupied, int gridX, int gridZ) => _gridMap.GetTile(gridX, gridZ).IsOccupied = isOccupied;
+
+    public List<Tile> GetEmptyTiles() => _gridMap.GetEmptyTiles();
+
+    private void OnMoveStarted(Vector3 startPosition) => _gridMap.SetOccupiedAt(false, startPosition);
+    private void OnMoveEnd(Vector3 endPosition) => _gridMap.SetOccupiedAt(true, endPosition);
 }

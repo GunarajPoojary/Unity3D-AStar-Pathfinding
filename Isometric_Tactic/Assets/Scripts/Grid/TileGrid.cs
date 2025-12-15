@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// A Grid of tiles which uses 2D array to store tiles and uses Unity's XZ plane for Grid coordinate.
@@ -39,7 +40,8 @@ public class TileGrid
     /// <param name="gridX">The grid X coordinate/column index.</param>
     /// <param name="gridZ">The grid Z coordinate/Row index.</param>
     /// <returns>World position.</returns>
-    public Vector3 GetWorldPosition(int gridX, int gridZ) => new Vector3(gridX, 0, gridZ) * TileSize + _originPosition;
+    public Vector3 GetWorldPosition(int gridX, int gridZ) // TODO: Move this method to a static Grid Utility class
+                        => new Vector3(gridX, 0, gridZ) * TileSize + _originPosition;
 
     /// <summary>
     /// Converts World Position to Grid Coordinates.
@@ -47,7 +49,7 @@ public class TileGrid
     /// <param name="worldPosition">World position of the tile.</param>
     /// <param name="gridX">The grid X coordinate/column index.</param>
     /// <param name="gridZ">The grid Z coordinate/Row index.</param>
-    public void GetGridCoord(Vector3 worldPosition, out int gridX, out int gridZ)
+    public void GetGridCoord(Vector3 worldPosition, out int gridX, out int gridZ) // TODO: Move this method to a static Grid Utility class
     {
         Vector3 localPos = worldPosition - _originPosition;
 
@@ -76,4 +78,23 @@ public class TileGrid
     /// Tile present at the provided grid coordinates
     /// </returns>
     public Tile GetTile(int gridX, int gridZ) => _tilesGrid[gridX, gridZ];
+
+    public List<Tile> GetEmptyTiles()
+    {
+        List<Tile> emptyTiles = new List<Tile>();
+
+        for (int gridX = 0; gridX < _tilesGrid.GetLength(0); gridX++) 
+        {
+            for (int gridZ = 0; gridZ < _tilesGrid.GetLength(1); gridZ++) 
+            {
+                Tile tile = GetTile(gridX, gridZ);
+                if (!tile.IsObstacle)
+                {
+                    emptyTiles.Add(tile);
+                }
+            }
+        }
+
+        return emptyTiles;
+    }
 }

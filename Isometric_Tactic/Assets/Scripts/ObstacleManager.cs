@@ -11,7 +11,9 @@ public class ObstacleManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _obstaclePrefabs;
 
-    private void Start()
+    private void Awake() => SetupObstacles();
+
+    private void SetupObstacles()
     {
         const int ROTATION_STEPS = 3; // forward, right, left and backward starts from 0 step.
         const float ANGLE = 90f;
@@ -35,5 +37,13 @@ public class ObstacleManager : MonoBehaviour
                     Instantiate(_obstaclePrefabs[UnityEngine.Random.Range(0, _obstaclePrefabs.Length)], tile.transform.position, Quaternion.Euler(0f, UnityEngine.Random.Range(0, ROTATION_STEPS) * ANGLE, 0f), transform);
             }
         }
+    }
+
+    public void SetObstacleAt(bool isObstacle, int gridX, int gridZ)
+    {
+        Tile tile = _gridMap.Grid.GetTile(gridX, gridZ); // Get the corresponding tile from the grid.
+
+        if (tile != null)
+            tile.IsObstacle = isObstacle;
     }
 }

@@ -35,11 +35,11 @@ public class EnemyController : MonoBehaviour, IAI
     {
         GameEvents.OnPlayerMoveEnd -= TakeTurn;
         GameEvents.OnEnemyMoveStarted -= HandleMoveStarted;
-        GameEvents.OnEnemyMoveEnd += HandleMoveEnd;
+        GameEvents.OnEnemyMoveEnd -= HandleMoveEnd;
     }
 
-    private void HandleMoveStarted() => _enemyAnim.SetMovementAnimation(true);
-    private void HandleMoveEnd() => _enemyAnim.SetMovementAnimation(false);
+    private void HandleMoveStarted(Vector3 startPosition) => _enemyAnim.SetMovementAnimation(true);
+    private void HandleMoveEnd(Vector3 endPosition) => _enemyAnim.SetMovementAnimation(false);
 
     private void SetReferences()
     {

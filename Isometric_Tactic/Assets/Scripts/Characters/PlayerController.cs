@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         GameEvents.OnEnemyMoveEnd -= HandleEnemyMoveEnd;
     }
 
-    private void HandleMoveStarted()
+    private void HandleMoveStarted(Vector3 startPosition)
     {
         _playerAnim.SetMovementAnimation(true);
 
@@ -75,12 +75,12 @@ public class PlayerController : MonoBehaviour
         _input.IsInputDisabled = false;
     }
 
-    private void HandleEnemyMoveStarted() => _input.IsInputDisabled = true;
-    private void HandleEnemyMoveEnd() => _input.IsInputDisabled = false;
+    private void HandleEnemyMoveStarted(Vector3 startPosition) => _input.IsInputDisabled = true;
+    private void HandleEnemyMoveEnd(Vector3 endPosition) => _input.IsInputDisabled = false;
 
     private void MoveTo(Tile targetTile)
     {
-        if (!targetTile.IsObstacle)
+        if (!targetTile.IsObstacle && !targetTile.IsOccupied)
             _movement.MoveTowards(targetTile.transform.position, this);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Stores data about obstacles on Tiles Grid
@@ -11,7 +12,9 @@ public class SOObstacleData : ScriptableObject
     [Tooltip("Grid Coordinate settings")]
     [SerializeField] private SOGridConfig _gridConfig;
 
-    [SerializeField] private bool[] _obstacles; // Use 1D array instead of 2D array because 2D array is not serializable in Unity.
+    [SerializeField]
+    [HideInInspector] // Avoid setting in inspector
+    private bool[] _obstacles; // Use 1D array instead of 2D array because 2D array is not serializable in Unity.
 
     // Properties
     public int GridWidth => _gridConfig != null ? _gridConfig.GridWidth
@@ -50,7 +53,7 @@ public class SOObstacleData : ScriptableObject
     /// <param name="gridX">Grid X Coordinate/Column index.</param>
     /// <param name="gridZ">Grid Z Coordinate/Row Index.</param>
     /// <returns>1D array index.</returns>
-    private int ToArrayIndex(int gridX, int gridZ)
+    private int ToArrayIndex(int gridX, int gridZ) // TODO: Move this method to a static Grid Utility class
     {
         // Converts grid coordinates into a 1D array index
         return gridZ * _gridConfig.GridWidth + gridX;

@@ -34,7 +34,7 @@ public class Pathfinder
             List<Vector3> pathPoints = new List<Vector3>();
 
             // Convert list of tiles to world position
-            for (int i = 1; i < path.Count; i++)
+            for (int i = 0; i < path.Count; i++)
             {
                 pathPoints.Add(new Vector3(path[i].GridX, 0f, path[i].GridZ) * _grid.TileSize);
             }
@@ -94,6 +94,8 @@ public class Pathfinder
             {
                 // Skip obstacles and already evaluated tiles
                 if (neighbourTile.IsObstacle) continue;
+                if (neighbourTile.IsOccupied && neighbourTile != endTile) continue; // Include endTile since it's always occupied 
+
                 if (_closedList.Contains(neighbourTile)) continue;
 
                 // Movement cost from start to this neighbor

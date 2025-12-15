@@ -6,11 +6,15 @@ using UnityEngine;
 /// </summary>
 public class Tile : MonoBehaviour
 {
+    private bool _isObstacle = false;
+    private bool _isOccupied = false;
+
     // Properties
     public int GridX { get; set; }  // X position on the grid/column index.
     public int GridZ { get; set; } // Z position on the grid/row index.
 
-    public bool IsObstacle { get; set; }
+    public bool IsObstacle { get => _isObstacle; set { _isObstacle = value; } }
+    public bool IsOccupied { get => _isOccupied; set { _isOccupied = value; } }
 
     public int GCost { get; set; } // Walking cost from the start node.
     public int HCost { get; set; } // Heuristic Cost to reach End Node.
